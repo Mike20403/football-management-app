@@ -1,0 +1,6 @@
+.sidebar-icon:hover {
+	padding: 5px;
+	box-sizing: content-box;
+	background: lightgray;
+	cursor: pointer;
+}
