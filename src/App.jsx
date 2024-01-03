@@ -1,19 +1,18 @@
 import { useState } from 'react'
 import './App.css'
 import Header from './components/Header'
-import { Container } from 'react-bootstrap'
-import HomePage from './pages/home/HomePage'
+import { BrowserRouter as Router } from 'react-router-dom'
+import MainRoutes from './routes/Routes'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-    <Header>
-    </Header>
-     <Container className='my-2'>
-      <HomePage></HomePage>
-    </Container>
+      <Router>
+        <Header />
+        <MainRoutes />
+      </Router>
     </>
   )
 }
