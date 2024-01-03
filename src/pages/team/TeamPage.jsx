@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Container, Row, Col, ListGroup, Card } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Card, Button, Form, Modal, Toast, ToastContainer } from 'react-bootstrap';
 import { mockDataWith30Teams } from '../../components/Table';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,15 +8,124 @@ const teams = mockDataWith30Teams.data.standings;
 
 export const TeamPage = () => {
 	const navigate = useNavigate();
+	const [show, setShow] = useState(false);
+
 	const [selectedTeam, setSelectedTeam] = useState(undefined);
+	const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
+	const [newPlayerData, setNewPlayerData] = useState({
+		name: '',
+		age: '',
+		// Add other fields as needed
+	});
+
+
+	const toggleShowA = () => setShowA(!showA);
 
 	const loadTeamPlayer = (id) => {
 		setSelectedTeam(teams[id]);
-	}
+	};
 
+	const handleAddPlayerClick = () => {
+		if (!selectedTeam) {
+			return setShow(true);
+		}
+		setShowAddPlayerModal(true);
+	};
+
+	const handleAddPlayerModalClose = () => {
+		setShowAddPlayerModal(false);
+		// Reset the form data when the modal is closed
+		setNewPlayerData({
+			name: '',
+			age: '',
+			// Reset other fields as needed
+		});
+	};
+
+	const handleAddPlayerFormSubmit = (e) => {
+		e.preventDefault();
+		// Add logic to handle form submission, e.g., send data to the server
+		// Reset the form data after submission
+		setNewPlayerData({
+			name: '',
+			age: '',
+			// Reset other fields as needed
+		});
+		// Close the modal
+		setShowAddPlayerModal(false);
+	};
+
+	const variant = 'Danger';
 
 	return (
 		<Container className="mt-4">
+			<ToastContainer position='bottom-center'>
+				<Toast
+					onClose={() => setShow(false)} show={show} delay={3000} autohide
+					className="d-inline-block m-1"
+					bg={variant.toLowerCase()}
+					key={'1'}
+				>
+					<Toast.Header>
+						<img
+							src="holder.js/20x20?text=%20"
+							className="rounded me-2"
+							alt=""
+						/>
+						<strong className="me-auto">Alert</strong>
+						<small>11 mins ago</small>
+					</Toast.Header>
+					<Toast.Body className={'text-white'}>
+						Please choose a team on your left before adding a player!!
+					</Toast.Body>
+				</Toast>
+			</ToastContainer>
+			<Row className='d-flex justify-content-end'>
+				<Button className='d-inline-block' style={{ width: "10rem" }} onClick={handleAddPlayerClick}>
+					Thêm cầu thủ
+				</Button>
+			</Row>
+
+			{/* Add Player Modal */}
+			<Modal show={showAddPlayerModal} onHide={handleAddPlayerModalClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>Thêm cầu thủ</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<Form onSubmit={handleAddPlayerFormSubmit}>
+						<Form.Group controlId="name">
+							<Form.Label>Tên cầu thủ</Form.Label>
+							<Form.Control
+								type="text"
+								placeholder="Nhập tên cầu thủ"
+								value={newPlayerData.name}
+								onChange={(e) => setNewPlayerData({ ...newPlayerData, name: e.target.value })}
+							/>
+						</Form.Group>
+
+						<Form.Group controlId="age">
+							<Form.Label>Tuổi</Form.Label>
+							<Form.Control
+								type="text"
+								placeholder="Nhập tuổi"
+								value={newPlayerData.age}
+								onChange={(e) => setNewPlayerData({ ...newPlayerData, age: e.target.value })}
+							/>
+						</Form.Group>
+
+						{/* Add other form fields as needed */}
+						<div className='d-flex justify-content-end mt-3'>
+							<Button variant="primary" type="submit" className='me-4'>
+								Thêm cầu thủ
+							</Button>
+							<Button variant="secondary" onClick={handleAddPlayerModalClose} className="ml-2">
+								Đóng
+							</Button>
+						</div>
+					</Form>
+				</Modal.Body>
+			</Modal>
+
 			<Row>
 				{/* First Column: List of Teams */}
 				<Col md={3}>
@@ -66,5 +176,4 @@ export const TeamPage = () => {
 		</Container>
 	);
 };
-
 

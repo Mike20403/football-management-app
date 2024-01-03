@@ -18,7 +18,7 @@ const PlayerDetails = () => {
     <Container className='mt-5'>
       <Row>
         <Col md={4}>
-          <Card>
+          <Card className='p-3'>
             <Card.Img
               variant="top"
               onError={(e) =>
