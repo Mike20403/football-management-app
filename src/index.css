@@ -9,7 +9,7 @@
 .sidebar {
 	position: fixed;
 	top: 0;
-	z-index: 2;
+	z-index: 10;
 	left: -250px;
 	/* Sidebar is initially off-screen */
 	width: 250px;
