@@ -1,16 +1,16 @@
 import { commonPlayerDetails, players, playersWithDetails } from '../../components/Table';
 import React, { useState } from 'react';
-import { Container, Row, Col, ListGroup, Card, Button, Form, Modal, Toast, ToastContainer } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Card, Button, Form, Modal, Toast, ToastContainer, FormControl } from 'react-bootstrap';
 import { mockDataWith30Teams } from '../../components/Table';
 import { useNavigate } from 'react-router-dom';
 import RemoveConfirmDialog from '../../components/forms/RemoveConfirmFormDialog';
 
-const teams = mockDataWith30Teams.data.standings;
+const teamsData = mockDataWith30Teams.data.standings;
 
 export const TeamPage = () => {
 	const navigate = useNavigate();
 	const [show, setShow] = useState(false);
-
+	const [teams, setTeams] = useState(teamsData);
 	const [selectedTeam, setSelectedTeam] = useState(undefined);
 	const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
 	const [newPlayerData, setNewPlayerData] = useState({
@@ -23,6 +23,43 @@ export const TeamPage = () => {
 
 	const [showRemoveDialog, setShowRemoveDialog] = useState(false);
 	const [selectedPlayer, setSelectedPlayer] = useState(null);
+	const [showAddTeam, toggleShowAddTeam] = useState(false);
+
+	const handleAddTeam = (teamName) => {
+
+		console.log([...teams, {
+			team: {
+				logos: [{ href: `https://validuspharma.com/wp-content/uploads/2019/06/nologo.png` }],
+				name: `${teamName}`,
+				players: [],
+			},
+			stats: [
+				{ value: Math.floor(Math.random() * 20) + 1 },  // Wins
+				{ value: Math.floor(Math.random() * 20) + 1 },  // Loss
+				{ value: Math.floor(Math.random() * 10) + 1 },  // Draws
+				{ value: Math.floor(Math.random() * 30) + 1 },  // Games
+				{ value: Math.floor(Math.random() * 40) + 1 },  // GF
+				{ value: Math.floor(Math.random() * 30) + 1 },  // GA
+				{ value: Math.floor(Math.random() * 50) + 1 },  // Points
+			],
+		}])
+		setTeams([...teams, {
+			team: {
+				logos: [{ href: `https://validuspharma.com/wp-content/uploads/2019/06/nologo.png` }],
+				name: `${teamName}`,
+				players: [],
+			},
+			stats: [
+				{ value: Math.floor(Math.random() * 20) + 1 },  // Wins
+				{ value: Math.floor(Math.random() * 20) + 1 },  // Loss
+				{ value: Math.floor(Math.random() * 10) + 1 },  // Draws
+				{ value: Math.floor(Math.random() * 30) + 1 },  // Games
+				{ value: Math.floor(Math.random() * 40) + 1 },  // GF
+				{ value: Math.floor(Math.random() * 30) + 1 },  // GA
+				{ value: Math.floor(Math.random() * 50) + 1 },  // Points
+			],
+		}])
+	}
 
 	const handleRemoveConfirm = () => {
 		// Add logic to handle removal (e.g., delete the team)
@@ -228,6 +265,41 @@ export const TeamPage = () => {
 								onClick={() => loadTeamPlayer(index)}
 								key={index}>{item.team.name}</ListGroup.Item>
 						))}
+						{	
+
+							<>
+								<ListGroup.Item hidden={!showAddTeam}>
+									<FormControl 
+										onBlur={(e) => {
+											handleAddTeam(e.target.value);
+											toggleShowAddTeam(false)
+										}}
+									>
+									</FormControl>
+								</ListGroup.Item>
+								<ListGroup.Item 
+									hidden={showAddTeam}
+									onClick={() => toggleShowAddTeam(true)}
+
+									onMouseEnter={(e) => {
+										e.currentTarget.style.transform = "scale(1.05)";
+										e.currentTarget.querySelector('.footer-overlay').style.opacity = 1; // Show the footer
+									}}
+									onMouseLeave={(e) => {
+										e.currentTarget.style.transform = "scale(1)";
+										e.currentTarget.querySelector('.footer-overlay').style.opacity = 0; // Hide the footer
+									}} 
+									style={
+										{
+											backgroundColor: "gray",
+											color: "white",
+											cursor: "pointer",
+										}}>
+									Click to add new Team
+								</ListGroup.Item>
+							</>
+							
+						}
 					</ListGroup>
 				</Col>
 
