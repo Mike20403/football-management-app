@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Nav } from 'react-bootstrap';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Nav } from "react-bootstrap";
 
 const Sidebar = ({ isOpen, onClose }) => {
   return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+    <div className={`sidebar ${isOpen ? "open" : ""}`}>
       <button className="close-button" onClick={onClose}>
         Close Sidebar
       </button>
@@ -24,7 +24,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         <Link to="/teams" className="nav-link">
           Teams
         </Link>
-        {/* Add more Link components for additional menu items */}
+        <Link to="/player-statistics" className="nav-link">
+          Player Statistics
+        </Link>
       </Nav>
     </div>
   );
