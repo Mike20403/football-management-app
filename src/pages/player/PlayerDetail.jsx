@@ -9,6 +9,7 @@ import ClubHistoryTimeline from '../../components/ClubHistoryTimeline';
 const PlayerDetails = () => {
   const { id } = useParams();
   const player = playersWithDetails.find((p) => p.id === parseInt(id, 10));
+  console.log(player);
 
   if (!player) {
     return <div>Player not found</div>;

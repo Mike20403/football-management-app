@@ -1,4 +1,4 @@
-
+import { commonPlayerDetails, players, playersWithDetails } from '../../components/Table';
 import React, { useState } from 'react';
 import { Container, Row, Col, ListGroup, Card, Button, Form, Modal, Toast, ToastContainer } from 'react-bootstrap';
 import { mockDataWith30Teams } from '../../components/Table';
@@ -13,8 +13,10 @@ export const TeamPage = () => {
 	const [selectedTeam, setSelectedTeam] = useState(undefined);
 	const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
 	const [newPlayerData, setNewPlayerData] = useState({
+		...commonPlayerDetails,
+		id: playersWithDetails.length,
 		name: '',
-		age: '',
+		imgUrl: '',
 		// Add other fields as needed
 	});
 
@@ -36,8 +38,11 @@ export const TeamPage = () => {
 		setShowAddPlayerModal(false);
 		// Reset the form data when the modal is closed
 		setNewPlayerData({
+			...commonPlayerDetails,
+			id: playersWithDetails.length,
+			age: 0,
 			name: '',
-			age: '',
+			imgUrl: ''
 			// Reset other fields as needed
 		});
 	};
@@ -46,11 +51,20 @@ export const TeamPage = () => {
 		e.preventDefault();
 		// Add logic to handle form submission, e.g., send data to the server
 		// Reset the form data after submission
+		console.log({ ...selectedTeam, team: { ...selectedTeam.team, players: [...selectedTeam.team.players, newPlayerData] } })
+		
+		setSelectedTeam({ ...selectedTeam, team: { ...selectedTeam.team, players: [...selectedTeam.team.players, newPlayerData] } });
+		playersWithDetails.push(newPlayerData);
+		// Reset the form data when the modal is closed
 		setNewPlayerData({
+			...commonPlayerDetails,
+			id: playersWithDetails.length,
+			age: 0,
 			name: '',
-			age: '',
+			imgUrl: ''
 			// Reset other fields as needed
 		});
+
 		// Close the modal
 		setShowAddPlayerModal(false);
 	};
@@ -113,6 +127,48 @@ export const TeamPage = () => {
 							/>
 						</Form.Group>
 
+						<div style={{
+							textAlign: 'center',
+							margin: '20px 0',
+						}}>
+							<img className='text-center'
+								onError={(e) =>
+								(e.currentTarget.src =
+									'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133351928-stock-illustration-default-placeholder-man-and-woman.jpg')
+								}
+								style={{
+
+									width: '200px',
+									height: '200px',
+									objectFit: 'cover',
+								}}
+								src={newPlayerData.imgUrl} />
+
+						</div>
+						
+								
+						
+						<Form.Group controlId="imgUrl" >
+							<Form.Label>Đường dẫn chân dung:</Form.Label>
+							<Form.Control
+								type="url"
+								placeholder="Đường dẫn chân dung"
+								value={newPlayerData.imgUrl}
+								onChange={(e) => setNewPlayerData({ ...newPlayerData, imgUrl: e.target.value })}
+							/>
+						</Form.Group>
+
+						<Form.Group controlId="hometown">
+							<Form.Label>Tuổi</Form.Label>
+							<Form.Control
+								type='text'
+								placeholder="Nhập quê quán"
+								value={newPlayerData.hometown}
+								onChange={(e) => setNewPlayerData({ ...newPlayerData, hometown: e.target.value })}
+							/>
+						</Form.Group>
+
+
 						{/* Add other form fields as needed */}
 						<div className='d-flex justify-content-end mt-3'>
 							<Button variant="primary" type="submit" className='me-4'>
@@ -131,10 +187,10 @@ export const TeamPage = () => {
 				<Col md={3}>
 					<h2>Teams</h2>
 					<ListGroup >
-						{teams.map((team, index) => (
+						{teams.map((item, index) => (
 							<ListGroup.Item action href={`#link${index}`} 
 								onClick={() => loadTeamPlayer(index)}
-								key={index}>{team.team.name}</ListGroup.Item>
+								key={index}>{item.team.name}</ListGroup.Item>
 						))}
 					</ListGroup>
 				</Col>

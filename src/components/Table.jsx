@@ -522,7 +522,7 @@ export const players = [
 	}
 ]
 
-const commonPlayerDetails = {
+export const commonPlayerDetails = {
 	// Basic details
 	age: 25,
 	family: "Married",
