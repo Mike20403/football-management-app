@@ -1,40 +1,66 @@
 import dayjs from "dayjs";
+import { Accordion } from "react-bootstrap";
 
-const Round = (round) => {
+const Round = ({ round }) => {
+	// console.log(round)
+	const matchesByStartDate = round.matches.reduce((acc, match) => {
+		const startDate = match.startDate.format('DD/MM/YYYY'); // Format the date as needed
+		const startTime = match.startDate.format('hh:mm A');
+		if (!acc[startDate]) {
+			acc[startDate] = [];
+		}
 
-	const dateArr = round.matches.map((match, index) => match.startDate)
+		acc[startDate].push(match);
+
+		return acc;
+	}, []);
+
+	const keys = Object.keys(matchesByStartDate);
+	console.log(matchesByStartDate);
+	
+	
+
 
 
 	return (<>
-		{
-			<Accordion>
-				{
-					round.matches.map((round, index) => {
-
-						return (
-							<>
-								<Accordion.Item eventKey={index + 1}>
-									<Accordion.Header>Accordion Item #1</Accordion.Header>
-									<Accordion.Body>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-										eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-										minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-										aliquip ex ea commodo consequat. Duis aute irure dolor in
-										reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-										pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-										culpa qui officia deserunt mollit anim id est laborum.
-									</Accordion.Body>
-								</Accordion.Item>
-							</>
-					
-					
-					
-						)
-					})
-				}
+		{keys.map((item, index) => {
 			
-			</Accordion>
-			
+			return (
+				<Accordion className="mt-4">
+					{
+					
+						<>
+							<Accordion.Item eventKey={index + 1}>
+								<Accordion.Header>{`Ngày thi đấu ${index + 1} - ${item}`}</Accordion.Header>
+								<Accordion.Body>
+									{
+										matchesByStartDate[item].map((match, index) => {
+											return (
+												<>
+													<div className="d-flex justify-content-between align-items-center">
+														<p className="d-inline-block">{match.startDate.format('hh:mm A')}</p>
+														<p className="d-inline-block"><p className="me-3 d-inline-block">Team A</p>   {match.homeTeam.goals} - {match.guestTeam.goals}  <p className="ms-3 d-inline-block">Team B</p></p>
+														<p></p>
+													</div>
+												</>
+											)
+										})
+									}
+									
+									
+								</Accordion.Body>
+							</Accordion.Item>
+						</>
+								
+								
+								
+						
+					
+					}
+						
+				</Accordion >
+			)
+		})
 		}
 	</>)	
 }
