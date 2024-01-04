@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, ListGroup, Card, Button, Form, Modal, Toast, ToastContainer } from 'react-bootstrap';
 import { mockDataWith30Teams } from '../../components/Table';
 import { useNavigate } from 'react-router-dom';
+import RemoveConfirmDialog from '../../components/forms/RemoveConfirmFormDialog';
 
 const teams = mockDataWith30Teams.data.standings;
 
@@ -19,6 +20,34 @@ export const TeamPage = () => {
 		imgUrl: '',
 		// Add other fields as needed
 	});
+
+	const [showRemoveDialog, setShowRemoveDialog] = useState(false);
+	const [selectedPlayer, setSelectedPlayer] = useState(null);
+
+	const handleRemoveConfirm = () => {
+		// Add logic to handle removal (e.g., delete the team)
+		console.log(`Successfully removed: ${selectedPlayer.name}`);
+		setSelectedTeam({
+			...selectedTeam, team: {
+				...selectedTeam.team, players: [...selectedTeam.team.players].filter(
+					e => e.id != selectedPlayer.id
+				)
+			}
+		})
+		// Close the dialog
+		setShowRemoveDialog(false);
+	};
+
+	const handleRemoveCancel = () => {
+		// Cancel removal
+		setShowRemoveDialog(false);
+	};
+
+	const handleRemoveClick = () => {
+		// Set the selected team and show the remove dialog
+		setSelectedTeam(selectedTeam); // Replace with actual data
+		setShowRemoveDialog(true);
+	};
 
 
 	const toggleShowA = () => setShowA(!showA);
@@ -72,7 +101,14 @@ export const TeamPage = () => {
 	const variant = 'Danger';
 
 	return (
+
 		<Container className="mt-4">
+			<RemoveConfirmDialog
+				show={showRemoveDialog}
+				onHide={handleRemoveCancel}
+				onConfirm={handleRemoveConfirm}
+				itemName={selectedPlayer ? selectedPlayer.name : ''}
+			/>
 			<ToastContainer position='bottom-center'>
 				<Toast
 					onClose={() => setShow(false)} show={show} delay={3000} autohide
@@ -202,21 +238,61 @@ export const TeamPage = () => {
 						{
 							selectedTeam ?
 								selectedTeam.team.players.map(player => (
-									<Col key={player.id} md={3} className="mb-4">
-										<Card style={{
-											cursor: "pointer"
-										}} onClick={() => navigate(`/player/${player.id}/details`)}>
-											<Card.Img variant="top" 
-												onError={(e) => e.currentTarget.src = "https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133351928-stock-illustration-default-placeholder-man-and-woman.jpg"}
-												style={{
-													width: "100%",
-													height: "200px"
-												}} src={player.imgUrl} alt={player.name} />
-											<Card.Body>
-												<Card.Title>{player.name}</Card.Title>
-											</Card.Body>
-										</Card>
-									</Col>
+
+									<>
+										<Col key={player.id} md={3} className="mb-4">
+											<Card style={{
+												position: "relative",
+												cursor: "pointer",
+												transition: "transform 0.2s"
+											}} onClick={() => navigate(`/player/${player.id}/details`)}
+												onMouseEnter={(e) => {
+													e.currentTarget.style.transform = "scale(1.05)";
+													e.currentTarget.querySelector('.footer-overlay').style.opacity = 1; // Show the footer
+												}}
+												onMouseLeave={(e) => {
+													e.currentTarget.style.transform = "scale(1)";
+													e.currentTarget.querySelector('.footer-overlay').style.opacity = 0; // Hide the footer
+												}}>
+												<Card.Img variant="top" 
+													onError={(e) => e.currentTarget.src = "https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133351928-stock-illustration-default-placeholder-man-and-woman.jpg"}
+													style={{
+														width: "100%",
+														height: "200px"
+													}} src={player.imgUrl} alt={player.name} />
+												<Card.Body style={{
+													marginBottom: "20px"
+												}}>
+													<Card.Title>{player.name}</Card.Title>
+												</Card.Body>
+
+
+												<Card.Footer
+													onClick={(e) => {
+														e.stopPropagation();
+														setSelectedPlayer(player);
+														setShowRemoveDialog(true);
+													
+													}}
+													className="footer-overlay"
+													style={{
+														backgroundColor: "red",
+														color: "white",
+														position: "absolute",
+														bottom: 0,
+														width: '100%',
+														left: '0',
+														textAlign: 'center',
+														opacity: 0, // Initially hidden
+														transition: "opacity 0.2s", // Add transition for smooth appearance
+													}}
+												>
+													Loại bỏ cầu thủ
+												</Card.Footer>
+											</Card>
+										</Col>
+									</>
+									
 								)) : (<Col md={12} style={{ 
 									marginTop: '30px',
 									textAlign: 'center'
@@ -229,6 +305,7 @@ export const TeamPage = () => {
 					</Row>
 				</Col>
 			</Row>
+
 		</Container>
 	);
 };
