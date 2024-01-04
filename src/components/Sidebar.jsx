@@ -15,8 +15,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         <Link to="/ranking" className="nav-link">
           League Ranking
         </Link>
-        <Link to="/profile" className="nav-link">
-          Profile
+        <Link to="/matches" className="nav-link">
+          Matches
         </Link>
         <Link to="/rules" className="nav-link">
           Rules

@@ -26,7 +26,7 @@ export const TeamPage = () => {
 	const [showAddTeam, toggleShowAddTeam] = useState(false);
 
 	const handleAddTeam = (teamName) => {
-
+		if (!teamName) return;
 		console.log([...teams, {
 			team: {
 				logos: [{ href: `https://validuspharma.com/wp-content/uploads/2019/06/nologo.png` }],
