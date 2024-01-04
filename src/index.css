@@ -1,20 +1,20 @@
 /*custom css */
 .nav-tabs .nav-link {
 	background-color: transparent !important;
-	color: #FFFFFF !important;
+	color: black !important;
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
 }
 
 .nav-tabs .nav-link.active {
-	border-bottom: solid 4px white !important;
+	border-bottom: solid 4px black !important;
 }
 
 .sidebar-icon:hover {
 	padding: 5px;
 	box-sizing: content-box;
-	background: lightgray;
+	background: black;
 	cursor: pointer;
 }
 
