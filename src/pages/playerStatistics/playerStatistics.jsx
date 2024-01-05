@@ -79,12 +79,12 @@ const PlayerStatistics = () => {
     <Container>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Model edit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group controlId="formNewGoals">
-              <Form.Label>New Goals:</Form.Label>
+              <Form.Label>New data:</Form.Label>
               <Form.Control
                 type="number"
                 value={

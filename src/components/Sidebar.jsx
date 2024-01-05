@@ -27,6 +27,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         <Link to="/player-statistics" className="nav-link">
           Player Statistics
         </Link>
+        <Link to="/schedule" className="nav-link">
+          Schedule
+        </Link>
       </Nav>
     </div>
   );

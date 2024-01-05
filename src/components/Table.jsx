@@ -1493,6 +1493,33 @@ export const playerData = [
   },
 ];
 
+export const matchData = [
+  {
+    id: 1,
+    team1: "Real Madrid",
+    team2: "Barcelona",
+    date: "2024-01-10",
+    time: "15:00",
+    location: "Santiago Bernabeu",
+  },
+  {
+    id: 2,
+    team1: "Real Madrid",
+    team2: "Manchester United",
+    date: "2024-01-15",
+    time: "18:30",
+    location: "Old Trafford",
+  },
+  {
+    id: 3,
+    team1: "Manchester United",
+    team2: "Bayern Munich",
+    date: "2024-01-20",
+    time: "20:00",
+    location: "Allianz Arena",
+  },
+];
+
 // Add player details using a loop
 export const playersWithDetails = players.map((player) => ({
   ...player,
